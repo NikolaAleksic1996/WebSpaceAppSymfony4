@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="{% block content_class %}show-article-container p-3 mt-4{% endblock %} "> {# ispred show..dodajemo block klasu koju cemo da nasledimo usledecim twigovima sa dizajanom iz nje npr Green line iznad Comentara i da budu viidljivi samo u twigovima koji naslede tu klasu#}
+                    {% block  content_body %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

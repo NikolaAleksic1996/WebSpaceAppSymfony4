@@ -1,0 +1,63 @@
+{% extends 'content_base.html.twig' %}
+
+{% block title %}Manage Comments{% endblock %}
+
+{# previse su 6 diva za jedantwig zato kreiramo content_base.html.twig i sada njega nasledjujemo a ne ispod body a gore base.html.twig a onda zamenimo to i u show.twig #}
+
+{% block content_class %}{{ parent() }} show-article-container-border-green {% endblock %} {# ne zelimo da nasledimo ceo twig vec samo deo zato ovo parent() i dodamo design i ove promen nece bit vidjene u ostalim tvigovima #}
+
+{% block content_body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Manage Comments </h1>
+
+            <form> {# ovim dodajemo serach dugme #}
+                <div class="input-group mb-3">
+                    <input type="text"
+                           name="q"
+                           class="form-control"
+                           placeholder="Search..."
+                    >
+                    <div class="input-group-append">
+                        <button type="submit"
+                                class="btn btn-outline-secondary">
+                            <span class="fa fa-search"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <table class="table table-striped">{# izlistamo sve komentare iz baze i bez truncate naredbom imamo N+1 query nju dobijamo iz composer require twig/extensions #}
+                <thead>
+                <tr>
+                    <th>Article</th>
+                    <th>Author</th>
+                    <th>Comment</th>
+                    <th>Created</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for comment in comments %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('article_show', {slug: comment.article.slug}) }}">{# vodi me na taj artikal #}
+                                {{ comment.article.title }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ comment.authorName }}
+                        </td>
+                        <td class="width: 20%">
+                            {{ comment.content|truncate }}
+                        </td>
+                        <td>
+                            {{ comment.createdAt|ago }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
