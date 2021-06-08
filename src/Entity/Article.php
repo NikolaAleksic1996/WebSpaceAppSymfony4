@@ -59,7 +59,8 @@ class Article
     private $imageFilename;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"createdAt" = "DESC"}) a sa Extra_lazy to jos bolje radimo
      */
     private $comments;
 
@@ -173,8 +174,30 @@ class Article
     /**
      * @return Collection|Comment[]
      */
-    public function getComments(): Collection
+    public function getComments(): Collection//ova vraca sve komentare
     {
+        return $this->comments;
+    }
+
+    //ova vraca samo one koji nisu oznaceni kao izbrisani
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getNonDeletedComments(): Collection
+    {
+        /*
+         * prva varijanta da vratimo je losa za performanse
+         $comments = [];
+        foreach ($this->getComments() as $comment){
+            if(!$comment->setIsDeleted()){
+                $comments[] = $comment;
+            }
+        }
+        return new ArrayCollection($comments);
+         *
+         * */
+
+
         return $this->comments;
     }
 

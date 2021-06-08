@@ -39,7 +39,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3><i class="pr-3 fa fa-comment"></i>{{ article.comments|length }} Comments</h3> {# bez article. postavalje fix com #}
+                        <h3><i class="pr-3 fa fa-comment"></i>{{ article.nonDeletedcomments|length }} Comments</h3> {# bez article. postavalje fix com Vraca broj komentara#}
                         <hr>
 
                         <div class="row mb-5">
@@ -55,13 +55,16 @@
                             </div>
                         </div>
 
-                        {% for comment in article.comments %}{# bez article.comments fix nije dinamicki #}
+                        {% for comment in article.nonDeletedComments %}{# bez article.comments fix nije dinamicki #}
                         <div class="row">
                             <div class="col-sm-12">
                                 <img class="comment-img rounded-circle" src="{{ asset('images/alien-profile.png') }}">
                                 <div class="comment-container d-inline-block pl-3 align-top">
                                     <span class="commenter-name">{{ comment.authorName }}</span>{# fix bi bilo direktno unesemo ime #}
                                     <small>about {{ comment.createdAt|ago }}</small> {# dodajemo about za komentar #}
+                                    {% if comment.isDeleted %}
+                                        <span class="fa fa-close"></span> deleted
+                                    {% endif %}
                                     <br>
                                     <span class="comment"> {{ comment.content }}</span>{# za sadrzaj isto bez .content #}
                                     <p><a href="#">Reply</a></p>

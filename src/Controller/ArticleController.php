@@ -48,6 +48,8 @@ class ArticleController extends AbstractController
             $slack->sendMessage('Kahn', 'Ah, Kirk, my old friend...');
         }
 
+
+        /*sve za STATICKO DODAVANJE
         //ovo nam pomaze da povezemo coment i artickal preko commentrepository ovde u artical controller dodamo CommentRepository argument
         //$comments = $commentRepository->findBy(['article' =>$article]);//sada imamo sv njegove komentare
         //dump($comments);die;
@@ -67,6 +69,7 @@ class ArticleController extends AbstractController
 //            'I like bacon too! Buy some from my site! bakinsomebacon.com',
 //        ];//staticko dodavanje komentara za artikal pa cemo zato direktno iz twiga zvati comments method
 
+        */
         return $this->render('article/show.html.twig', [
             'article' => $article,
             //'comments' => $comments,
