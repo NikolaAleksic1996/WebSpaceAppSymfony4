@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
 use App\Service\MarkdownHelper;
 use App\Service\SlackClient;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,15 +48,28 @@ class ArticleController extends AbstractController
             $slack->sendMessage('Kahn', 'Ah, Kirk, my old friend...');
         }
 
-        $comments = [
-            'I ate a normal rock once. It did NOT taste like bacon!',
-            'Woohoo! I\'m going on an all-asteroid diet!',
-            'I like bacon too! Buy some from my site! bakinsomebacon.com',
-        ];
+        //ovo nam pomaze da povezemo coment i artickal preko commentrepository ovde u artical controller dodamo CommentRepository argument
+        //$comments = $commentRepository->findBy(['article' =>$article]);//sada imamo sv njegove komentare
+        //dump($comments);die;
+        //ali je sporo
+
+        //$comments = $article->getComments();//zato idemo preko getere lazy load
+//        foreach ($comments as $comment){
+//            dump($comment);
+//        }
+//        die;//vraca nam sve objekte
+
+
+
+//        $comments = [
+//            'I ate a normal rock once. It did NOT taste like bacon!',
+//            'Woohoo! I\'m going on an all-asteroid diet!',
+//            'I like bacon too! Buy some from my site! bakinsomebacon.com',
+//        ];//staticko dodavanje komentara za artikal pa cemo zato direktno iz twiga zvati comments method
 
         return $this->render('article/show.html.twig', [
             'article' => $article,
-            'comments' => $comments,
+            //'comments' => $comments,
         ]);
     }
 
