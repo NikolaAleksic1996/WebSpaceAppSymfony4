@@ -33,6 +33,8 @@ class ArticleRepository extends ServiceEntityRepository
          */
 
         return $this->addIsPublishedQueryBuilder()
+            ->leftJoin('a.tags', 't')//sa ovo i ispod linijom resavamo N+1 Query
+            ->addSelect('t')
             ->orderBy('a.publishedAt', 'DESC')
             ->getQuery()
             ->getResult();

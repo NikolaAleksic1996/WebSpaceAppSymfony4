@@ -4,9 +4,11 @@ namespace App\DataFixtures;
 
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\Tag;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class ArticleFixtures extends BaseFixture
+class ArticleFixtures extends BaseFixture implements DependentFixtureInterface
 {
     private static $articleTitles = [
         'Why Asteroids Taste Like Bacon',
@@ -59,6 +61,17 @@ EOF
                 ->setImageFilename($this->faker->randomElement(self::$articleImages))
             ;
 
+            /**
+             * @var Tag[] $tags
+             */
+            //ovde kreiramo radom reference i povezujemo
+            $tags = $this->getRandomReferences(Tag::class, $this->faker->numberBetween(0, 5));//zatim ./bin/console doctrine:fixtures:load
+            foreach ($tags as $tag){
+                $article->addTag($tag);//ovde samo povezujemo
+               // $article->removeTag($tag);
+            }
+
+
             //ovde kreiramo komentare staticki za dinamicki pravimo CommentFixture sa ./bin/console make:fixture
 //            $comment1 = new Comment();
 //            $comment1->setAuthorName('Mike Ferengi');
@@ -73,7 +86,7 @@ EOF
 //            $manager->persist($comment2);
 
             /*A mozemo i preko artikla da dodamo comentar tj povezemo
-            ali nije dobro Inverse za OneToMany, Owning za ManyToOne
+            ali nije dobro, Inverse za OneToMany, Owning za ManyToOne
             $article->addComment($comment1);
             $article->addComment($comment2);
 
@@ -82,5 +95,13 @@ EOF
         });
 
         $manager->flush();
+    }
+
+    //zavisnost
+    public function getDependencies()
+    {
+        return[
+            TagFixtures::class,
+        ];
     }
 }

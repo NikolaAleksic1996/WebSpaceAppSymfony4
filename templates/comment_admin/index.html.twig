@@ -9,7 +9,7 @@
 {% block content_body %}
     <div class="row">
         <div class="col-sm-12">
-            <h1>Manage Comments </h1>
+            <h1>Manage Comments ({{ pagination.getTotalItemCount }}) </h1>
 
             <form> {# ovim dodajemo serach dugme #}
                 <div class="input-group mb-3">
@@ -17,6 +17,7 @@
                            name="q"
                            class="form-control"
                            placeholder="Search..."
+                           value="{{ app.request.query.get('q') }}" {# da u pretragu uvek stoji poslednje pretrazeno #}
                     >
                     <div class="input-group-append">
                         <button type="submit"
@@ -37,7 +38,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for comment in comments %}
+                {% for comment in pagination %}
                     <tr>
                         <td>
                             <a href="{{ path('article_show', {slug: comment.article.slug}) }}">{# vodi me na taj artikal #}
@@ -54,9 +55,17 @@
                             {{ comment.createdAt|ago }}
                         </td>
                     </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            No comments found
+                        </td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
+            {# Navigacija u donji levi ugao #}
+            {{ knp_pagination_render(pagination) }} {# morao samo da registrujem ovaj render u twig.yaml u path: a pre toga kreirao knp_paginator.yaml #}
         </div>
     </div>
 

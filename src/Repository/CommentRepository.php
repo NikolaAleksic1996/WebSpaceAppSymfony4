@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -21,24 +22,27 @@ class CommentRepository extends ServiceEntityRepository
 
     /**
      * @param string|null $term
-     * @return Comment[]
      */
-    public function findAllWithSearch(?string $term)//otkomentarisali smo u config fajl da po textu pretrazujemo
+    //@return Comment[]
+
+    public function getWithSearchQueryBilder(?string $term): QueryBuilder//otkomentarisali smo u config fajl da po textu pretrazujemo, za paginaciju vracamo tip QueryBilder
     {
-        $qb = $this->createQueryBuilder('c');
+        $qb = $this->createQueryBuilder('c')
+            ->innerJoin('c.article', 'a')
+            ->addSelect('a');//kada dodamo i artical vraca nam sa samo 1 query sve jer u select dodamo i artikal i resvamo se n+1
 
         if($term)
         {
             //necemo orWhere()
             //trazimo po tekstu i autora ili Comment
-            $qb->andWhere('c.content LIKE :term OR c.authorName LIKE :term')
+            $qb->andWhere('c.content LIKE :term OR c.authorName LIKE :term OR a.title LIKE :term')
                 ->setParameter('term', '%'.$term.'%');
         }
 
         return $qb
-            ->orderBy('c.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('c.createdAt', 'DESC');
+//            ->getQuery()
+//            ->getResult();
     }
 
 //    /**

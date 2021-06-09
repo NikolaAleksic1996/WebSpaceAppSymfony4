@@ -6,6 +6,7 @@
         "ext-iconv": "*",
         "composer/package-versions-deprecated": "^1.11",
         "knplabs/knp-markdown-bundle": "^1.7",
+        "knplabs/knp-paginator-bundle": "^5.5",
         "knplabs/knp-time-bundle": "^1.8",
         "nexylan/slack-bundle": "^2.0,<2.2.0",
         "php-http/guzzle6-adapter": "^1.1",
@@ -17,8 +18,9 @@
         "symfony/framework-bundle": "^4.0",
         "symfony/lts": "^4@dev",
         "symfony/orm-pack": "^1.0",
+        "symfony/security-bundle": "^4.0",
         "symfony/twig-bundle": "^4.0",
-        "symfony/web-server-bundle": "^4.0",
+        "symfony/web-server-bundle": "^4.4",
         "symfony/yaml": "^4.0",
         "twig/extensions": "^1.5"
     },
